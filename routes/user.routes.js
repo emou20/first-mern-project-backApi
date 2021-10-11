@@ -15,9 +15,8 @@ router.put("/role/:id", userController.updateUserRole);
 //upload image 
 router.post("/upload", upload.single('file'), uploadController.uploadImage);
 
-
 // auth
-router.post("/register", userController.signUp);
+router.post("/register", upload.single('file'), userController.signUp);
 router.post("/login", userController.signIn);
 router.get("/connexion/logout", userController.logouttt);
 
