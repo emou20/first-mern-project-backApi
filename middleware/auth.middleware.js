@@ -5,7 +5,6 @@ const userModels = require('../models/user.model');
 // vérification de la toneken si elle est valide ou pas 
 module.exports.checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
-  
     if(token) {
         jwt.verify(token, process.env.TOKEN_SECRET, async (err, docs) => {
             if(err){

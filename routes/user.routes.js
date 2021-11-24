@@ -10,7 +10,7 @@ const upload = multer();
 router.get("/", userController.getUsers);
 router.get("/:id", userController.getUser);
 router.delete("/:id", userController.deleteUser);
-router.put("/:id", userController.updateUser);
+router.put("/:id", upload.single('file'), userController.updateUser);
 router.put("/role/:id", userController.updateUserRole);
 //upload image 
 router.post("/upload", upload.single('file'), uploadController.uploadImage);

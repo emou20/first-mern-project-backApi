@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require ('bcrypt');
 
-const usersSchema = new Schema(
+const clientsSchema = new Schema(
     {
         firstName: {
             type: String,
@@ -12,11 +12,7 @@ const usersSchema = new Schema(
             type: String,
             required: true
         },
-        date: {
-            type: String,
-            required: true
-        },
-        adress: {
+        phone: {
             type: String,
             required: true
         },
@@ -24,22 +20,23 @@ const usersSchema = new Schema(
             type: String,
             required: true
         },
-        phone: {
+        adress: {
             type: String,
             required: true
-        },
-        role: {
-            type: String,
-            required: true
-        },
-        foto: {
-            type: String
         },
         login: {
             type: String,
             required: true,
         },
         pass: {
+            type: String,
+            required: true
+        },
+        question: {
+            type: String,
+            required: true
+        },
+        reply: {
             type: String,
             required: true
         }
@@ -50,22 +47,21 @@ const usersSchema = new Schema(
 );
 
 // Criptage de mote de passe en brypt algoritme avant la savegarde des données
-usersSchema.pre("save", async function(next) {
+clientsSchema.pre("save", async function(next) {
     const salt = await bcrypt.genSalt();
     this.pass = await bcrypt.hash(this.pass, salt);
     next();
   });
 
 // Vérification de l'authentification (login et mot de passe)
-usersSchema.statics.login = async function(login, pass) {
+clientsSchema.statics.login = async function(login, pass) {
     console.log(login, pass);
-    const user = await this.findOne({login}).exec();
-    console.log(user);
-    if (user) {
-        
-      const auth = await bcrypt.compare(pass, user.pass);
+    const client = await this.findOne({login}).exec();
+    console.log(client);
+    if (client) {
+      const auth = await bcrypt.compare(pass, client.pass);
       if (auth) {
-        return user;
+        return client;
       }
       throw Error('incorrect password');
     }
@@ -73,5 +69,5 @@ usersSchema.statics.login = async function(login, pass) {
   };
 
 
-const userModels = mongoose.model('user', usersSchema);
-module.exports = userModels;
+const clientModels = mongoose.model('client', clientsSchema);
+module.exports = clientModels;
